@@ -55,7 +55,7 @@ RUN useradd -m -d /opt/alice -s /bin/bash alice && \
 # ------------------------------------------------------------
 # 3. Verify aliBuild is working (fast sanity check)
 # ------------------------------------------------------------
-RUN alibuild --version && alienv --help > /dev/null
+RUN aliBuild --version && alienv --help > /dev/null
 
 # ------------------------------------------------------------
 # 4. Copy helper scripts into the image
