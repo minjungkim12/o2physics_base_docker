@@ -16,10 +16,9 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=32
-#SBATCH --time=02:00:00
-#SBATCH --account=YOUR_NERSC_PROJECT
+#SBATCH --time=12:00:00
+#SBATCH --account=ALICE
 # Mount both alice dir (build) and data dir
-#SBATCH --volume="/pscratch/sd/m/minjung:/scratch"
 #SBATCH --output=logs/run_%j.out
 #SBATCH --error=logs/run_%j.err
 
