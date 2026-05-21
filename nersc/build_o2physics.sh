@@ -21,9 +21,8 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=64
-#SBATCH --time=01:00:00
+#SBATCH --time=24:00:00
 #SBATCH --account=ALICE
-#SBATCH --volume="/pscratch/sd/m/minjung:/scratch"
 #SBATCH --output=logs/build_%j.out
 #SBATCH --error=logs/build_%j.err
 
