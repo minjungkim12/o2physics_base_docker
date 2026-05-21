@@ -21,11 +21,11 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=64
-#SBATCH --time=06:00:00
-#SBATCH --account=YOUR_NERSC_PROJECT
+#SBATCH --time=24:00:00
+#SBATCH --account=ALICE
 # Mount $SCRATCH into the container as /scratch
 # (Replace 'm' and 'minjung' with your initial and username)
-#SBATCH --volume="/pscratch/sd/m/minjung:/scratch"
+#SBATCH --volume="/global/cfs/cdirs/alice/mjkim/alice:/scratch"
 #SBATCH --output=logs/setup_%j.out
 #SBATCH --error=logs/setup_%j.err
 
