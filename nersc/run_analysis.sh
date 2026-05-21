@@ -10,7 +10,7 @@
 # ============================================================
 
 #SBATCH --job-name=o2physics-run
-#SBATCH --image=docker:YOURDOCKERHUBID/o2physics-builder:latest
+#SBATCH --image=docker:mjkim1212/o2physics-builder:latest
 #SBATCH --qos=regular
 #SBATCH --constraint=cpu
 #SBATCH --nodes=1
