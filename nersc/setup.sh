@@ -15,17 +15,17 @@
 # ============================================================
 
 #SBATCH --job-name=o2physics-setup
-#SBATCH --image=docker:mjkim1212/o2physics-builder:latest
+#SBATCH --image=docker:YOURDOCKERHUBID/o2physics-builder:latest
 #SBATCH --qos=regular
 #SBATCH --constraint=cpu
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=64
-#SBATCH --time=24:00:00
-#SBATCH -A alice
-# Mount $SCRATCH into the container as /scratch
-# (Replace 'm' and 'minjung' with your initial and username)
-#SBATCH --volume="/global/cfs/cdirs/alice/mjkim/alice:/scratch"
+#SBATCH --time=06:00:00
+#SBATCH --account=YOUR_NERSC_PROJECT
+# Mount CFS alice directory into the container as /scratch
+# /global/cfs/cdirs/alice/mjkim  →  /scratch  (inside container)
+#SBATCH --volume="/global/cfs/cdirs/alice/mjkim:/scratch"
 #SBATCH --output=logs/setup_%j.out
 #SBATCH --error=logs/setup_%j.err
 
@@ -36,7 +36,8 @@ O2PHYSICS_REPO="https://github.com/AliceO2Group/O2Physics"
 # Branch to build (master = latest daily)
 O2PHYSICS_BRANCH="master"
 
-# Base directory on $SCRATCH (mapped to /scratch in container)
+# CFS path: /global/cfs/cdirs/alice/mjkim  →  mounted as /scratch in container
+# So ALICE_DIR=/scratch/alice  ==  /global/cfs/cdirs/alice/mjkim/alice on the host
 ALICE_DIR="/scratch/alice"
 
 # ── Setup ───────────────────────────────────────────────────

@@ -1,0 +1,12 @@
+=== Initialising O2Physics source ===
+=== Building O2Physics (full stack) ===
+ALIBUILD_WORK_DIR = /scratch/alice/sw
+=== Done! ===
+
+Verify your build:
+  alienv q
+
+Next steps:
+  - Edit source in /scratch/alice/O2Physics/
+  - Run sbatch nersc/build_o2physics.sh to rebuild
+  - Run sbatch nersc/run_analysis.sh to run analysis

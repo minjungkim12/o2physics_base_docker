@@ -53,7 +53,17 @@ RUN useradd -m -d /opt/alice -s /bin/bash alice && \
     chmod 755 /opt/alice
 
 # ------------------------------------------------------------
-# 3. Verify aliBuild is working (fast sanity check)
+# 3. Pre-disable aliBuild analytics
+#    aliBuild checks for this file at startup. If it exists,
+#    it skips the interactive analytics question entirely.
+#    Without this, it crashes inside Shifter (read-only HOME).
+# ------------------------------------------------------------
+RUN mkdir -p /opt/alice/.config/alibuild && \
+    touch /opt/alice/.config/alibuild/disable-analytics && \
+    chmod -R a+rX /opt/alice/.config
+
+# ------------------------------------------------------------
+# 4. Verify aliBuild is working (fast sanity check)
 # ------------------------------------------------------------
 RUN aliBuild version && alienv --help > /dev/null
 

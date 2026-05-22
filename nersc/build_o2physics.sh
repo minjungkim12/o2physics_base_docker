@@ -15,14 +15,15 @@
 # ============================================================
 
 #SBATCH --job-name=o2physics-build
-#SBATCH --image=docker:mjkim1212/o2physics-builder:latest
+#SBATCH --image=docker:YOURDOCKERHUBID/o2physics-builder:latest
 #SBATCH --qos=regular
 #SBATCH --constraint=cpu
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=64
-#SBATCH --time=24:00:00
-#SBATCH --account=ALICE
+#SBATCH --time=01:00:00
+#SBATCH --account=YOUR_NERSC_PROJECT
+#SBATCH --volume="/global/cfs/cdirs/alice/mjkim:/scratch"
 #SBATCH --output=logs/build_%j.out
 #SBATCH --error=logs/build_%j.err
 

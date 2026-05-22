@@ -1,0 +1,4 @@
+mkdir: cannot create directory ‘/scratch/alice’: Permission denied
+/var/spool/slurmd/job53247411/slurm_script: line 45: cd: /scratch/alice: No such file or directory
+/var/spool/slurmd/job53247411/slurm_script: line 54: aliBuild: command not found
+/var/spool/slurmd/job53247411/slurm_script: line 69: aliBuild: command not found
