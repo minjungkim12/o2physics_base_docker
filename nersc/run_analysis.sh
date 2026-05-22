@@ -2,7 +2,7 @@
 # ============================================================
 # NERSC Perlmutter — RUN O2Physics ANALYSIS
 #
-# Runs your analysis task using the O2Physics build in $SCRATCH.
+# Runs your analysis task using the O2Physics build on CFS.
 # The entrypoint automatically loads alienv before the command.
 #
 # Prerequisites:
@@ -16,20 +16,20 @@
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=32
-#SBATCH --time=12:00:00
-#SBATCH --account=ALICE
-# Mount both alice dir (build) and data dir
+#SBATCH --time=02:00:00
+#SBATCH --account=alice
+# CFS is globally accessible inside Shifter — no --volume needed.
 #SBATCH --output=logs/run_%j.out
 #SBATCH --error=logs/run_%j.err
 
 # ── Configuration ───────────────────────────────────────────
 
-ALICE_DIR="/scratch/alice"
-DATA_DIR="/scratch/data"          # put your AO2D.root here
-OUTPUT_DIR="/scratch/output"
+ALICE_DIR="/global/cfs/cdirs/alice/mjkim/alice"
+DATA_DIR="/global/cfs/cdirs/alice/mjkim/data"    # put your AO2D.root here
+OUTPUT_DIR="/global/cfs/cdirs/alice/mjkim/output"
 
-export ALIBUILD_WORK_DIR="$ALICE_DIR/sw"
 export HOME="$ALICE_DIR"
+export ALIBUILD_WORK_DIR="$ALICE_DIR/sw"
 
 mkdir -p "$OUTPUT_DIR"
 cd "$OUTPUT_DIR"

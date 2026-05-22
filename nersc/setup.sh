@@ -3,29 +3,26 @@
 # NERSC Perlmutter — FIRST-TIME SETUP
 #
 # Clones O2Physics (or your fork) and builds the full stack
-# (ROOT, O2, and all dependencies) into $SCRATCH.
+# (ROOT, O2, and all dependencies) into CFS.
 #
 # Run ONCE. Takes 2-5 hours (downloads precompiled binaries
 # for most packages on AlmaLinux 9).
 # After this, only 'build_o2physics.sh' is needed for updates.
 #
 # Usage:
-#   Edit the variables below, then:
 #   sbatch nersc/setup.sh
 # ============================================================
 
 #SBATCH --job-name=o2physics-setup
-#SBATCH --image=docker:YOURDOCKERHUBID/o2physics-builder:latest
+#SBATCH --image=docker:mjkim1212/o2physics-builder:latest
 #SBATCH --qos=regular
 #SBATCH --constraint=cpu
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=64
 #SBATCH --time=06:00:00
-#SBATCH --account=YOUR_NERSC_PROJECT
-# Mount CFS alice directory into the container as /scratch
-# /global/cfs/cdirs/alice/mjkim  →  /scratch  (inside container)
-#SBATCH --volume="/global/cfs/cdirs/alice/mjkim:/scratch"
+#SBATCH --account=alice
+# CFS is globally accessible inside Shifter — no --volume needed.
 #SBATCH --output=logs/setup_%j.out
 #SBATCH --error=logs/setup_%j.err
 
@@ -36,19 +33,26 @@ O2PHYSICS_REPO="https://github.com/AliceO2Group/O2Physics"
 # Branch to build (master = latest daily)
 O2PHYSICS_BRANCH="master"
 
-# CFS path: /global/cfs/cdirs/alice/mjkim  →  mounted as /scratch in container
-# So ALICE_DIR=/scratch/alice  ==  /global/cfs/cdirs/alice/mjkim/alice on the host
-ALICE_DIR="/scratch/alice"
+# Install directory on CFS (writable, persistent)
+ALICE_DIR="/global/cfs/cdirs/alice/mjkim/alice"
 
 # ── Setup ───────────────────────────────────────────────────
 
 mkdir -p "$ALICE_DIR"
 cd "$ALICE_DIR"
 
+# aliBuild needs a writable HOME (Docker sets HOME=/opt/alice which is
+# read-only in Shifter — override it here to the CFS path)
+export HOME="$ALICE_DIR"
 export ALIBUILD_WORK_DIR="$ALICE_DIR/sw"
-export HOME="$ALICE_DIR"   # aliBuild needs a writable HOME
+
+# Pre-create analytics disable file so aliBuild doesn't ask interactively
+mkdir -p "$HOME/.config/alibuild"
+touch "$HOME/.config/alibuild/disable-analytics"
 
 echo "=== Initialising O2Physics source ==="
+echo "ALICE_DIR          = $ALICE_DIR"
+echo "ALIBUILD_WORK_DIR  = $ALIBUILD_WORK_DIR"
 
 # aliBuild init clones O2Physics + alidist (build recipes)
 if [[ ! -d "$ALICE_DIR/O2Physics" ]]; then
@@ -63,7 +67,6 @@ else
 fi
 
 echo "=== Building O2Physics (full stack) ==="
-echo "ALIBUILD_WORK_DIR = $ALIBUILD_WORK_DIR"
 
 # AlmaLinux 9: aliBuild downloads precompiled binaries for most
 # packages. Only O2Physics itself is compiled from source.

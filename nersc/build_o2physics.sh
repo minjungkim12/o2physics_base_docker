@@ -3,11 +3,11 @@
 # NERSC Perlmutter — INCREMENTAL O2Physics BUILD
 #
 # Rebuilds only O2Physics (and nothing else).
-# All dependencies (ROOT, O2, ...) are already in $SCRATCH/sw
+# All dependencies (ROOT, O2, ...) are already in CFS/sw
 # from the first-time setup.sh run.
 #
 # Typical use:
-#   1. Edit your task in $SCRATCH/alice/O2Physics/
+#   1. Edit your task in $ALICE_DIR/O2Physics/
 #   2. sbatch nersc/build_o2physics.sh
 #   3. sbatch nersc/run_analysis.sh
 #
@@ -15,23 +15,28 @@
 # ============================================================
 
 #SBATCH --job-name=o2physics-build
-#SBATCH --image=docker:YOURDOCKERHUBID/o2physics-builder:latest
+#SBATCH --image=docker:mjkim1212/o2physics-builder:latest
 #SBATCH --qos=regular
 #SBATCH --constraint=cpu
 #SBATCH --nodes=1
 #SBATCH --ntasks=1
 #SBATCH --cpus-per-task=64
 #SBATCH --time=01:00:00
-#SBATCH --account=YOUR_NERSC_PROJECT
-#SBATCH --volume="/global/cfs/cdirs/alice/mjkim:/scratch"
+#SBATCH --account=alice
+# CFS is globally accessible inside Shifter — no --volume needed.
 #SBATCH --output=logs/build_%j.out
 #SBATCH --error=logs/build_%j.err
 
 # ── Configuration ───────────────────────────────────────────
 
-ALICE_DIR="/scratch/alice"
-export ALIBUILD_WORK_DIR="$ALICE_DIR/sw"
+ALICE_DIR="/global/cfs/cdirs/alice/mjkim/alice"
+
 export HOME="$ALICE_DIR"
+export ALIBUILD_WORK_DIR="$ALICE_DIR/sw"
+
+# Pre-create analytics disable file (safe to re-run)
+mkdir -p "$HOME/.config/alibuild"
+touch "$HOME/.config/alibuild/disable-analytics"
 
 # ── Incremental build ───────────────────────────────────────
 
